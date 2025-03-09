@@ -10,14 +10,31 @@ import UIKit
 class ImagesListViewController: UIViewController {
     
     
-    @IBOutlet private var tableview: UITableView!
+    @IBOutlet private var tableView: UITableView!
+    
+    private let photosName: [String] = Array(0..<20).map{ "\($0)" }
+    
+    private lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+        return formatter
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        
     }
     
-    func configCell(for cell: ImagesListCell) { }
+    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
+        guard let image = UIImage(named: photosName[indexPath.row]) else {
+            return
+        }
+        cell.cellImage.image = image
+        cell.dateLabel.text = dateFormatter.string(from: Date())
+    }
     
     
 }
@@ -26,7 +43,7 @@ extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) { }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return photosName.count
     }
 }
 
@@ -38,7 +55,7 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        configCell(for: imageListCell)
+        configCell(for: imageListCell, with: indexPath)
         return imageListCell
     }
 }
