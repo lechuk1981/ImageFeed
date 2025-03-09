@@ -30,7 +30,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		3B2F864C2D7786440071B4D6 /* Exceptions for "ImageFeed" folder in "ImageFeed" target */ = {
+		3B2F867B2D7793A30071B4D6 /* Exceptions for "Resources" folder in "ImageFeed" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -42,20 +42,20 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3B2F86262D7786430071B4D6 /* ImageFeed */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				3B2F864C2D7786440071B4D6 /* Exceptions for "ImageFeed" folder in "ImageFeed" target */,
-			);
 			path = ImageFeed;
 			sourceTree = "<group>";
 		};
-		3B2F863D2D7786440071B4D6 /* ImageFeedTests */ = {
+		3B2F867A2D77938E0071B4D6 /* Resources */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ImageFeedTests;
+			exceptions = (
+				3B2F867B2D7793A30071B4D6 /* Exceptions for "Resources" folder in "ImageFeed" target */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
-		3B2F86472D7786440071B4D6 /* ImageFeedUITests */ = {
+		3B2F867D2D7793B70071B4D6 /* Presentation */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ImageFeedUITests;
+			path = Presentation;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -89,9 +89,9 @@
 			isa = PBXGroup;
 			children = (
 				3B2F86262D7786430071B4D6 /* ImageFeed */,
-				3B2F863D2D7786440071B4D6 /* ImageFeedTests */,
-				3B2F86472D7786440071B4D6 /* ImageFeedUITests */,
 				3B2F86252D7786430071B4D6 /* Products */,
+				3B2F867A2D77938E0071B4D6 /* Resources */,
+				3B2F867D2D7793B70071B4D6 /* Presentation */,
 			);
 			sourceTree = "<group>";
 		};
@@ -122,6 +122,8 @@
 			);
 			fileSystemSynchronizedGroups = (
 				3B2F86262D7786430071B4D6 /* ImageFeed */,
+				3B2F867A2D77938E0071B4D6 /* Resources */,
+				3B2F867D2D7793B70071B4D6 /* Presentation */,
 			);
 			name = ImageFeed;
 			packageProductDependencies = (
@@ -143,9 +145,6 @@
 			dependencies = (
 				3B2F863C2D7786440071B4D6 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				3B2F863D2D7786440071B4D6 /* ImageFeedTests */,
-			);
 			name = ImageFeedTests;
 			packageProductDependencies = (
 			);
@@ -165,9 +164,6 @@
 			);
 			dependencies = (
 				3B2F86462D7786440071B4D6 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				3B2F86472D7786440071B4D6 /* ImageFeedUITests */,
 			);
 			name = ImageFeedUITests;
 			packageProductDependencies = (
