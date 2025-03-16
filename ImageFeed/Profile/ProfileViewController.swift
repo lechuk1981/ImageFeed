@@ -14,4 +14,6 @@ class ProfileViewController: UIViewController {
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var exitButton: UIButton!
     @IBOutlet var profileImage: UIImageView!
+    
+    
 }
