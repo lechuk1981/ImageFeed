@@ -169,6 +169,13 @@
                             <constraint firstItem="8RZ-97-hSS" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="K44-aD-DGk" secondAttribute="trailing" symbolic="YES" id="y5P-D8-iow"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="accauntLabel" destination="gCn-H8-w6d" id="ujR-dO-bKy"/>
+                        <outlet property="accauntText" destination="3w6-Lv-2h7" id="nW8-OA-iEk"/>
+                        <outlet property="exitButton" destination="dUr-QE-LkC" id="Fey-zw-OSC"/>
+                        <outlet property="nameLabel" destination="K44-aD-DGk" id="7mz-xb-lJ9"/>
+                        <outlet property="profileImage" destination="5PF-QP-7PA" id="aUK-bz-SfQ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j7c-kY-e3c" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
