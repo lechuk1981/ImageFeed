@@ -7,10 +7,10 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
     
-    @IBOutlet var accauntText: UILabel!
-    @IBOutlet var accauntLabel: UILabel!
+    @IBOutlet var accountText: UILabel!
+    @IBOutlet var accountLabel: UILabel!
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var exitButton: UIButton!
     @IBOutlet var profileImage: UIImageView!
@@ -29,7 +29,7 @@ class ProfileViewController: UIViewController {
         configDescriptionLabel()
         configExitButton()
         
-        [profileImage, nameLabel, accauntLabel, accauntText, exitButton].forEach {
+        [profileImage, nameLabel, accountLabel, accountText, exitButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
@@ -52,19 +52,19 @@ class ProfileViewController: UIViewController {
     }
     
     private func configNickNameLabel() {
-        let accauntLabel = UILabel()
-        accauntLabel.text = "@ekaterina_nov"
-        accauntLabel.textColor = UIColor.init(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
-        accauntLabel.font = UIFont.systemFont(ofSize: 13)
-        self.accauntLabel = accauntLabel
+        let accountLabel = UILabel()
+        accountLabel.text = "@ekaterina_nov"
+        accountLabel.textColor = UIColor.init(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
+        accountLabel.font = UIFont.systemFont(ofSize: 13)
+        self.accountLabel = accountLabel
     }
     
     private func configDescriptionLabel() {
-        let accauntText = UILabel()
-        accauntText.text = "Hello, world!"
-        accauntText.textColor = UIColor(named: "YP White")
-        accauntText.font = UIFont.systemFont(ofSize: 13)
-        self.accauntText = accauntText
+        let accountText = UILabel()
+        accountText.text = "Hello, world!"
+        accountText.textColor = UIColor(named: "YP White")
+        accountText.font = UIFont.systemFont(ofSize: 13)
+        self.accountText = accountText
     }
     
     private func configExitButton() {
@@ -81,10 +81,10 @@ class ProfileViewController: UIViewController {
             profileImage.heightAnchor.constraint(equalToConstant: 70),
             nameLabel.leadingAnchor.constraint(equalTo: profileImage.leadingAnchor),
             nameLabel.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 8),
-            accauntLabel.leadingAnchor.constraint(equalTo: profileImage.leadingAnchor),
-            accauntLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-            accauntText.leadingAnchor.constraint(equalTo: profileImage.leadingAnchor),
-            accauntText.topAnchor.constraint(equalTo: accauntLabel.bottomAnchor, constant: 8),
+            accountLabel.leadingAnchor.constraint(equalTo: profileImage.leadingAnchor),
+            accountLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
+            accountText.leadingAnchor.constraint(equalTo: profileImage.leadingAnchor),
+            accountText.topAnchor.constraint(equalTo: accountLabel.bottomAnchor, constant: 8),
             exitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             exitButton.centerYAnchor.constraint(equalTo: profileImage.centerYAnchor),
             exitButton.widthAnchor.constraint(equalToConstant: 44),
