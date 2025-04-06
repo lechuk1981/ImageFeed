@@ -292,20 +292,28 @@
                                     <action selector="didTapBackButton" destination="9Nf-Hp-ghv" eventType="touchUpInside" id="ZWa-lY-BnP"/>
                                 </connections>
                             </button>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="9Oa-QI-8HC">
+                                <rect key="frame" x="16" y="52" width="361" height="4"/>
+                                <color key="tintColor" red="0.1019607843" green="0.1058823529" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </progressView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="eIL-WU-yAp"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="9Oa-QI-8HC" firstAttribute="top" secondItem="ebR-Hx-dno" secondAttribute="bottom" constant="8" symbolic="YES" id="0Iz-Kr-H1G"/>
                             <constraint firstItem="eIL-WU-yAp" firstAttribute="trailing" secondItem="QVl-8M-2ql" secondAttribute="trailing" id="8Sg-fE-XLD"/>
                             <constraint firstItem="QVl-8M-2ql" firstAttribute="top" secondItem="eIL-WU-yAp" secondAttribute="top" id="GQX-iU-qT3"/>
                             <constraint firstItem="ebR-Hx-dno" firstAttribute="leading" secondItem="eIL-WU-yAp" secondAttribute="leading" id="Tup-on-Ova"/>
                             <constraint firstItem="eIL-WU-yAp" firstAttribute="bottom" secondItem="QVl-8M-2ql" secondAttribute="bottom" id="pEy-xe-Obu"/>
+                            <constraint firstItem="9Oa-QI-8HC" firstAttribute="leading" secondItem="eIL-WU-yAp" secondAttribute="leading" constant="16" id="pZH-w3-fU8"/>
+                            <constraint firstItem="eIL-WU-yAp" firstAttribute="trailing" secondItem="9Oa-QI-8HC" secondAttribute="trailing" constant="16" id="tbB-OZ-WX2"/>
                             <constraint firstItem="ebR-Hx-dno" firstAttribute="top" secondItem="eIL-WU-yAp" secondAttribute="top" id="tkx-XO-JHZ"/>
                             <constraint firstItem="QVl-8M-2ql" firstAttribute="leading" secondItem="eIL-WU-yAp" secondAttribute="leading" id="yeG-S8-8ZI"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" style="editor" id="aWd-Xu-zNb"/>
                     <connections>
+                        <outlet property="progressView" destination="9Oa-QI-8HC" id="PDt-A9-h6E"/>
                         <outlet property="webView" destination="QVl-8M-2ql" id="0Oz-4J-Sq2"/>
                     </connections>
                 </viewController>
