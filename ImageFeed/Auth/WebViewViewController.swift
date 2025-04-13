@@ -31,13 +31,6 @@ final class WebViewViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.navigationDelegate = self
-        
-//        webView.addObserver(
-//            self,
-//            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-//            options: .new,
-//            context: nil)
-        
         loadAuthView()
     }
     
@@ -93,48 +86,17 @@ final class WebViewViewController: UIViewController {
         let request = URLRequest(url: url)
         webView.load(request)
     }
-    
-//    private func code(from navigationAction: WKNavigationAction) -> String? {
-//        if
-//            let url = navigationAction.request.url,
-//            let urlComponents = URLComponents(string: url.absoluteString),
-//            urlComponents.path == "/oauth/authorize/native",
-//            let items = urlComponents.queryItems,
-//            let codeItem = items.first(where: { $0.name == "code" })
-//        {
-//            return codeItem.value
-//        } else {
-//            return nil
-//        }
-//    }
+
     private func code(from url: URL?) -> String? {
         guard let url = url,
               let urlComponents = URLComponents(string: url.absoluteString),
               urlComponents.path == "/oauth/authorize/native",
               let codeItem = urlComponents.queryItems?.first(where: { $0.name == "code" })
         else { return nil}
-        print (">>>", codeItem.value)
         return codeItem.value
     }
     
 }
-
-//extension WebViewViewController: WKNavigationDelegate {
-//    func webView(
-//        _ webView: WKWebView,
-//        decidePolicyFor navigationAction: WKNavigationAction,
-//        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
-//    ) {
-////         if let code = code(from: navigationAction) {
-//             print(">>>", navigationAction.request.url)
-////             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
-////                decisionHandler(.cancel)
-////          } else {
-//                decisionHandler(.allow)
-////            }
-//    }
-//
-//}
 
 extension WebViewViewController: WKNavigationDelegate {
     func webView(
@@ -151,13 +113,5 @@ extension WebViewViewController: WKNavigationDelegate {
                 
             }
         }
-    
-//    func code(from url: URL?) -> String? {
-//        guard let url = url,
-//              let urlComponents = URLComponents(string: url.absoluteString),
-//              urlComponents.path == "/oauth/authorize/native",
-//              let codeItem = urlComponents.queryItems?.first(where: { $0.name == "code" })
-//        else { return nil}
-//        return codeItem.value
-//    }
+
 }
