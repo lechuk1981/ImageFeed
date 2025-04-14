@@ -51,7 +51,7 @@
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="KkM-8m-W9R"/>
                                                     </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                    <state key="normal" image="No Active.png"/>
+                                                    <state key="normal" image="No Active"/>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -130,7 +130,7 @@
                                     <constraint firstAttribute="width" constant="24" id="UuP-rh-FWT"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="Backward"/>
+                                <state key="normal" image="backward_white"/>
                                 <connections>
                                     <action selector="didTapBackButton" destination="1tn-QP-zhn" eventType="touchUpInside" id="JU3-gV-gHN"/>
                                 </connections>
@@ -275,14 +275,14 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="qJJ-6d-sdW"/>
+                        <viewLayoutGuide key="safeArea" id="gpa-xt-G3X"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="U8r-Jx-HiE" firstAttribute="centerX" secondItem="Jrt-q9-cbJ" secondAttribute="centerX" id="ObO-pO-er5"/>
                             <constraint firstItem="U8r-Jx-HiE" firstAttribute="centerY" secondItem="Jrt-q9-cbJ" secondAttribute="centerY" id="b9B-uV-3zc"/>
-                            <constraint firstItem="qJJ-6d-sdW" firstAttribute="bottom" secondItem="7RK-tU-ZTb" secondAttribute="bottom" constant="90" id="ktr-dA-wAg"/>
-                            <constraint firstItem="7RK-tU-ZTb" firstAttribute="leading" secondItem="qJJ-6d-sdW" secondAttribute="leading" constant="24" id="mYc-T7-XnV"/>
-                            <constraint firstItem="qJJ-6d-sdW" firstAttribute="trailing" secondItem="7RK-tU-ZTb" secondAttribute="trailing" constant="24" id="rQA-Il-5li"/>
+                            <constraint firstAttribute="bottom" secondItem="7RK-tU-ZTb" secondAttribute="bottom" constant="90" id="ktr-dA-wAg"/>
+                            <constraint firstItem="7RK-tU-ZTb" firstAttribute="leading" secondItem="Jrt-q9-cbJ" secondAttribute="leading" constant="24" id="mYc-T7-XnV"/>
+                            <constraint firstAttribute="trailing" secondItem="7RK-tU-ZTb" secondAttribute="trailing" constant="24" id="rQA-Il-5li"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="gqL-PE-mWq"/>
@@ -371,10 +371,10 @@
     <resources>
         <image name="0.jpg" width="1600" height="1059"/>
         <image name="1" width="985" height="1280"/>
-        <image name="Backward" width="24" height="24"/>
-        <image name="No Active.png" width="44" height="44"/>
+        <image name="No Active" width="44" height="44"/>
         <image name="Vector" width="75" height="78"/>
         <image name="backward_black" width="24" height="24"/>
+        <image name="backward_white" width="24" height="24"/>
         <image name="logo_auth" width="60" height="60"/>
         <image name="share_button" width="50" height="50"/>
         <image name="tab_editorial_active" width="75" height="49"/>
