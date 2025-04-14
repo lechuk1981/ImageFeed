@@ -21,7 +21,7 @@ final class ProfileViewController: UIViewController {
         
         setUIElements()
     }
-
+    
     private func setUIElements() {
         configAvatarPhoto()
         configUserNameLabel()

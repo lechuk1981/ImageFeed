@@ -86,7 +86,7 @@ final class WebViewViewController: UIViewController {
         let request = URLRequest(url: url)
         webView.load(request)
     }
-
+    
     private func code(from url: URL?) -> String? {
         guard let url = url,
               let urlComponents = URLComponents(string: url.absoluteString),
@@ -113,5 +113,5 @@ extension WebViewViewController: WKNavigationDelegate {
                 
             }
         }
-
+    
 }

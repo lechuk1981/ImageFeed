@@ -10,12 +10,11 @@ import UIKit
 final class OAuth2Service {
     static let shared = OAuth2Service()
     private let urlSession = URLSession.shared
+    private let decoder = JSONDecoder()
     private init() {}
     
     var authToken: String? {
-        get {
-            return OAuth2TokenStorage().token
-        }
+        get {OAuth2TokenStorage().token}
         set {
             OAuth2TokenStorage().token = newValue
         }
@@ -32,7 +31,7 @@ final class OAuth2Service {
             + "&&redirect_uri=\(Constants.redirectURI)"
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
-            relativeTo: baseURL                          
+            relativeTo: baseURL
         )!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -64,10 +63,9 @@ final class OAuth2Service {
         for request: URLRequest,
         completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void
     ) -> URLSessionTask {
-        let decoder = JSONDecoder()
         return urlSession.data(for: request) { (result: Result<Data, Error>) in
             let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
-                Result { try decoder.decode(OAuthTokenResponseBody.self, from: data) }
+                Result { try self.decoder.decode(OAuthTokenResponseBody.self, from: data) }
             }
             completion(response)
         }
