@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ProgressHUD
 
 final class SplashViewController: UIViewController {
     
@@ -46,8 +47,10 @@ final class SplashViewController: UIViewController {
     }
     
     func fetchAuthToken(with code: String) {
+        ProgressHUD.animate()
         oauth2Service.fetchAuthToken(with: code) { [weak self] result in
             guard let self else { preconditionFailure("Cannot make weak link") }
+            ProgressHUD.dismiss()
             switch result {
             case .success(let result):
                 print("ITS LIT \(result)")
