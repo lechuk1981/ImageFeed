@@ -47,10 +47,10 @@ final class SplashViewController: UIViewController {
     }
     
     func fetchAuthToken(with code: String) {
-        ProgressHUD.animate()
+        UIBlockingProgressHUD.show()
         oauth2Service.fetchAuthToken(with: code) { [weak self] result in
             guard let self else { preconditionFailure("Cannot make weak link") }
-            ProgressHUD.dismiss()
+            UIBlockingProgressHUD.dismiss()
             switch result {
             case .success(let result):
                 print("ITS LIT \(result)")

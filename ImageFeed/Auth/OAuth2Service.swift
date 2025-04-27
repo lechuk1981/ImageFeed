@@ -7,8 +7,14 @@
 
 import UIKit
 
+enum AuthServiceError: Error {
+    case invalidRequest
+}
+
 final class OAuth2Service {
     static let shared = OAuth2Service()
+    private var task: URLSessionTask?
+    private var lastCode: String?
     private let urlSession = URLSession.shared
     private let decoder = JSONDecoder()
     private init() {}
@@ -20,7 +26,7 @@ final class OAuth2Service {
         }
     }
     
-    func makeOAuthTokenRequest(code: String) -> URLRequest {
+    func makeOAuthTokenRequest(code: String) -> URLRequest? {
         guard let baseURL = URL(string: "https://unsplash.com") else {
             fatalError("Invalid base URL")
         }
@@ -40,12 +46,36 @@ final class OAuth2Service {
     }
     
     func fetchAuthToken(with code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        
         let completionOnMainQueue: (Result<String, Error>) -> Void = { result in
             DispatchQueue.main.async {
                 completion(result)
             }
         }
-        let request = makeOAuthTokenRequest(code: code)
+        //                let request = makeOAuthTokenRequest(code: code)
+        //
+        //                let task = fetchOAuthTokenResponse(for: request) { [weak self] result in
+        //                    guard let self else { fatalError("Unable to create fetch") }
+        //                    switch result {
+        //                    case .success(let body):
+        //                        self.authToken = body.accessToken
+        //                        completionOnMainQueue(.success(body.accessToken))
+        //                    case .failure(let error):
+        //                        completionOnMainQueue(.failure(error))
+        //                    }
+        //                }
+        //                task.resume()
+        assert(Thread.isMainThread)
+        
+        if lastCode == code { return }
+        task?.cancel()
+        lastCode = code
+        
+        guard let request = makeOAuthTokenRequest(code: code) else {
+            assertionFailure("Failed to make request")
+            return
+        }
+        
         let task = fetchOAuthTokenResponse(for: request) { [weak self] result in
             guard let self else { fatalError("Unable to create fetch") }
             switch result {
@@ -53,11 +83,15 @@ final class OAuth2Service {
                 self.authToken = body.accessToken
                 completionOnMainQueue(.success(body.accessToken))
             case .failure(let error):
+                self.lastCode = nil
                 completionOnMainQueue(.failure(error))
             }
+            self.task = nil
         }
+        self.task = task
         task.resume()
     }
+    
     
     func fetchOAuthTokenResponse(
         for request: URLRequest,
