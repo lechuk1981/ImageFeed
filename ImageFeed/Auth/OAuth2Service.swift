@@ -52,19 +52,6 @@ final class OAuth2Service {
                 completion(result)
             }
         }
-        //                let request = makeOAuthTokenRequest(code: code)
-        //
-        //                let task = fetchOAuthTokenResponse(for: request) { [weak self] result in
-        //                    guard let self else { fatalError("Unable to create fetch") }
-        //                    switch result {
-        //                    case .success(let body):
-        //                        self.authToken = body.accessToken
-        //                        completionOnMainQueue(.success(body.accessToken))
-        //                    case .failure(let error):
-        //                        completionOnMainQueue(.failure(error))
-        //                    }
-        //                }
-        //                task.resume()
         assert(Thread.isMainThread)
         
         if lastCode == code { return }
