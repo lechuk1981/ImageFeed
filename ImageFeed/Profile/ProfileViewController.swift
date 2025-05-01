@@ -16,12 +16,23 @@ final class ProfileViewController: UIViewController {
     @IBOutlet var profileImage: UIImageView!
     
     private let profileService = ProfileService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUIElements()
         loadProfile()
+        profileImageServiceObserver = NotificationCenter.default
+                    .addObserver(
+                        forName: ProfileImageService.didChangeNotification,
+                        object: nil,
+                        queue: .main
+                    ) { [weak self] _ in
+                        guard let self = self else { return }
+                        self.updateAvatar()                                 
+                    }
+                updateAvatar()
     }
     
     func loadProfile() {
@@ -50,6 +61,14 @@ final class ProfileViewController: UIViewController {
         
         activateConstraints()
     }
+    
+    private func updateAvatar() {
+           guard
+               let profileImageURL = ProfileImageService.shared.avatarURL,
+               let url = URL(string: profileImageURL)
+           else { return }
+           // TODO [Sprint 11] Обновить аватар, используя Kingfisher
+       }
     
     private func configAvatarPhoto() {
         let photo = UIImage(named: "photo")

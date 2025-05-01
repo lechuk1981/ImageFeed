@@ -65,11 +65,13 @@ final class SplashViewController: UIViewController {
     }
     
     private func fetchProfile(token: String) {
+        UIBlockingProgressHUD.show()
         profileService.fetchProfile(token) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
             guard let self else { return }
             switch result {
             case .success(let profile):
-              
+                ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { _ in }
                 self.switchToTabBarController()
                 UIBlockingProgressHUD.dismiss()
                 
