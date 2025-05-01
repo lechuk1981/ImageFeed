@@ -7,12 +7,16 @@
 
 import  Foundation
 
+
 final class ProfileService {
+    
     
     static let shared = ProfileService()
     
     private let urlSession = URLSession.shared
     private(set) var profile: ProfileResult?
+//    private(set) var profile: Profile?
+
     private var task: URLSessionTask?
     private var lastToken: String?
     
@@ -27,20 +31,20 @@ final class ProfileService {
                 return
             }
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-            let task = urlSession.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
-                guard let self else { return }
-                switch result {
-                case .success(let profileResult):
-                    self.profile = profileResult
-                    completion(.success(profileResult))
-                    self.task = nil
-                case .failure(let error):
-                    completion(.failure(error))
-                    self.lastToken = nil
-                }
-            }
-            self.task = task
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
+                   guard let self else { return }
+                   switch result {
+                   case .success(let profileResult):
+                       self.profile = profileResult
+                       completion(.success(profileResult))
+                       self.task = nil
+                   case .failure(let error):
+                       completion(.failure(error))
+                       self.lastToken = nil
+                   }
+               }
+               self.task = task
 
-            task.resume()
+               task.resume()
         }
 }

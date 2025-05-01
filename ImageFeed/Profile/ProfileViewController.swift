@@ -15,11 +15,25 @@ final class ProfileViewController: UIViewController {
     @IBOutlet var exitButton: UIButton!
     @IBOutlet var profileImage: UIImageView!
     
+    private let profileService = ProfileService.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUIElements()
+        loadProfile()
+    }
+    
+    func loadProfile() {
+        guard let profile = profileService.profile  else {
+            nameLabel.text = "Екатерина Новикова"
+            accountLabel.text = "@ekaterina_nov"
+            accountText.text = "Hello, world!"
+            return
+        }
+        self.nameLabel.text = (profile.firstName ?? " ") + (profile.lastName ?? "")
+        self.accountLabel.text = "@" + (profile.username)
+        self.accountText.text = profile.bio
     }
     
     private func setUIElements() {
@@ -45,7 +59,7 @@ final class ProfileViewController: UIViewController {
     
     private func configUserNameLabel() {
         let nameLabel = UILabel()
-        nameLabel.text = "Екатерина Новикова"
+//        nameLabel.text = "Екатерина Новикова"
         nameLabel.textColor = UIColor(named: "YP White")
         nameLabel.font = UIFont.systemFont(ofSize: 23, weight: .semibold)
         self.nameLabel = nameLabel
@@ -53,7 +67,7 @@ final class ProfileViewController: UIViewController {
     
     private func configNickNameLabel() {
         let accountLabel = UILabel()
-        accountLabel.text = "@ekaterina_nov"
+//        accountLabel.text = "@ekaterina_nov"
         accountLabel.textColor = UIColor.init(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
         accountLabel.font = UIFont.systemFont(ofSize: 13)
         self.accountLabel = accountLabel
@@ -61,7 +75,7 @@ final class ProfileViewController: UIViewController {
     
     private func configDescriptionLabel() {
         let accountText = UILabel()
-        accountText.text = "Hello, world!"
+//        accountText.text = "Hello, world!"
         accountText.textColor = UIColor(named: "YP White")
         accountText.font = UIFont.systemFont(ofSize: 13)
         self.accountText = accountText
