@@ -24,6 +24,8 @@ final class ProfileViewController: UIViewController {
         
         setUIElements()
         loadProfile()
+        view.backgroundColor = .ypBlack
+        
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(
                 forName: ProfileImageService.didChangeNotification,
@@ -139,3 +141,8 @@ final class ProfileViewController: UIViewController {
     }
 }
 
+extension ProfileViewController {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+}
