@@ -15,8 +15,6 @@ final class ProfileService {
     
     private let urlSession = URLSession.shared
     private(set) var profile: ProfileResult?
-//    private(set) var profile: Profile?
-
     private var task: URLSessionTask?
     private var lastToken: String?
     

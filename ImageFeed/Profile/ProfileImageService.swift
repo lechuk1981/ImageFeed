@@ -33,9 +33,9 @@ final class ProfileImageService {
         
         guard var request = URLRequest.makeHTTPRequest(path: "/users/\(username)", httpMethod: "GET"),
               let token = oAuthTokenStorage.token else {
-                  assertionFailure("Failed to make HTTP request")
-                  return
-              }
+            assertionFailure("Failed to make HTTP request")
+            return
+        }
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         let task = urlSession.objectTask(for: request) { [weak self] (result:Result<UserResult, Error>) in
@@ -48,7 +48,7 @@ final class ProfileImageService {
                                                 object: self,
                                                 userInfo: ["URL": user.profileImage.large])
                 self.avatarURL = user.profileImage.large
-              
+                
             case .failure(let error):
                 completion(.failure(error))
             }

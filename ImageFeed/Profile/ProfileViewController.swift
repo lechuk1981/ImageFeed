@@ -46,12 +46,12 @@ final class ProfileViewController: UIViewController {
             accountText.text = "Hello, world!"
             return
         }
-        self.nameLabel.text = (profile.firstName ?? " ") + (profile.lastName ?? "")
+        self.nameLabel.text = (profile.firstName ?? "") + " " + (profile.lastName ?? "")
         self.accountLabel.text = "@" + (profile.username)
         self.accountText.text = profile.bio
     }
     
-      
+    
     private func setUIElements() {
         configAvatarPhoto()
         configUserNameLabel()
