@@ -11,7 +11,7 @@ import Foundation
 enum NetworkError: Error {
     case httpStatusCode(Int)
     case urlRequestError(Error)
-    case urlSessionError
+    case urlSessionError(Error)
 }
 
 extension URLSession {
@@ -35,7 +35,7 @@ extension URLSession {
             } else if let error = error {
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlRequestError(error)))
             } else {
-                fulfillCompletionOnTheMainThread(.failure(NetworkError.urlSessionError))
+                fulfillCompletionOnTheMainThread(.failure(NetworkError.urlSessionError(error!)))
             }
         })
         
@@ -50,7 +50,7 @@ extension URLSession {
                 
                 if let error = error {
                     DispatchQueue.main.async {
-                        completion(.failure(NetworkError.urlSessionError))
+                        completion(.failure(NetworkError.urlSessionError(error)))
                     }
                 }
                 
@@ -73,7 +73,7 @@ extension URLSession {
                         }
                     } catch {
                         DispatchQueue.main.async {
-                            completion(.failure(NetworkError.urlSessionError))
+                            completion(.failure(NetworkError.urlSessionError(error)))
                         }
                     }
                 }
