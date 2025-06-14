@@ -45,7 +45,7 @@ final class OAuth2Service {
         return request
     }
     
-    func fetchAuthToken(with code: String, completion: @escaping (Result<String, Error>) -> Void) {
+    func fetchAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
         
         let completionOnMainQueue: (Result<String, Error>) -> Void = { result in
             DispatchQueue.main.async {

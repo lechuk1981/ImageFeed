@@ -26,6 +26,7 @@ final class ProfileImageService {
     private let urlSession = URLSession.shared
     private let oAuthTokenStorage = OAuth2TokenStorage()
     
+    
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void ) {
         assert(Thread.isMainThread)
         task?.cancel()
@@ -47,6 +48,7 @@ final class ProfileImageService {
                                                 object: self,
                                                 userInfo: ["URL": user.profileImage.large])
                 self.avatarURL = user.profileImage.large
+              
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -57,3 +59,5 @@ final class ProfileImageService {
     }
     
 }
+
+
