@@ -23,7 +23,7 @@ final class OAuth2TokenStorage: OAuth2TokenStorageProtocol {
         }
         set {
             guard let newValue else {
-                assertionFailure("invalid token")
+                print("[OAuth2TokenStorage] invalid token")
                 return
             }
             KeychainWrapper.standard.set(newValue, forKey: Keys.token.rawValue)

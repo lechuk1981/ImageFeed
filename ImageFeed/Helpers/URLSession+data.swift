@@ -30,11 +30,14 @@ extension URLSession {
                 if 200 ..< 300 ~= statusCode {
                     fulfillCompletionOnTheMainThread(.success(data)) 
                 } else {
+                    print("[URLSession] URL statusCode error: \(statusCode)")
                     fulfillCompletionOnTheMainThread(.failure(NetworkError.httpStatusCode(statusCode)))
                 }
             } else if let error = error {
+                print("[URLSession] URL request error: \(error)")
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlRequestError(error)))
             } else {
+                print("[URLSession] URL session error: \(error!)")
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlSessionError(error!)))
             }
         })
@@ -50,6 +53,7 @@ extension URLSession {
                 
                 if let error = error {
                     DispatchQueue.main.async {
+                        print("[URLSession] Decoding error: \(error)")
                         completion(.failure(NetworkError.urlSessionError(error)))
                     }
                 }
@@ -57,6 +61,7 @@ extension URLSession {
                 if let response = response as? HTTPURLResponse {
                     if !(200..<300 ~= response.statusCode) {
                         DispatchQueue.main.async {
+                            print("[URLSession] statusCode error: \(response.statusCode)")
                             completion(.failure(NetworkError.httpStatusCode(response.statusCode)))
                         }
                     }
@@ -73,6 +78,7 @@ extension URLSession {
                         }
                     } catch {
                         DispatchQueue.main.async {
+                            print("[URLSession] Decoding error: \(error), Data: \(String(data: data, encoding: .utf8) ?? "No data")")
                             completion(.failure(NetworkError.urlSessionError(error)))
                         }
                     }
