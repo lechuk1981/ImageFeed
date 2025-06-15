@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
@@ -15,12 +16,41 @@ final class ProfileViewController: UIViewController {
     @IBOutlet var exitButton: UIButton!
     @IBOutlet var profileImage: UIImageView!
     
+    private let profileService = ProfileService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUIElements()
+        loadProfile()
+        view.backgroundColor = .ypBlack
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                updateAvatar()
+            }
+        updateAvatar()
+        
     }
+    
+    func loadProfile() {
+        guard let profile = profileService.profile  else {
+            nameLabel.text = "Екатерина Новикова"
+            accountLabel.text = "@ekaterina_nov"
+            accountText.text = "Hello, world!"
+            return
+        }
+        nameLabel.text = "\(profile.firstName ?? "") \(profile.lastName ?? "")"
+        accountLabel.text = "@" + (profile.username)
+        accountText.text = profile.bio
+    }
+    
     
     private func setUIElements() {
         configAvatarPhoto()
@@ -28,6 +58,7 @@ final class ProfileViewController: UIViewController {
         configNickNameLabel()
         configDescriptionLabel()
         configExitButton()
+        
         
         [profileImage, nameLabel, accountLabel, accountText, exitButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -37,15 +68,34 @@ final class ProfileViewController: UIViewController {
         activateConstraints()
     }
     
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        print("URL = \(url)")
+        let cache = ImageCache.default
+        cache.clearDiskCache()
+        let processor = RoundCornerImageProcessor(cornerRadius: 42)
+        
+        self.profileImage.kf.setImage(with: url,
+                                      placeholder: UIImage(named: "placeholder"),
+                                      options: [.processor(processor), .transition(.fade(1))])
+        
+    }
+    
     private func configAvatarPhoto() {
+        
+        if profileImage != nil { return }
         let photo = UIImage(named: "photo")
         let profileImage = UIImageView(image: photo)
         self.profileImage = profileImage
+        
     }
+    
     
     private func configUserNameLabel() {
         let nameLabel = UILabel()
-        nameLabel.text = "Екатерина Новикова"
         nameLabel.textColor = UIColor(named: "YP White")
         nameLabel.font = UIFont.systemFont(ofSize: 23, weight: .semibold)
         self.nameLabel = nameLabel
@@ -53,7 +103,6 @@ final class ProfileViewController: UIViewController {
     
     private func configNickNameLabel() {
         let accountLabel = UILabel()
-        accountLabel.text = "@ekaterina_nov"
         accountLabel.textColor = UIColor.init(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
         accountLabel.font = UIFont.systemFont(ofSize: 13)
         self.accountLabel = accountLabel
@@ -61,7 +110,6 @@ final class ProfileViewController: UIViewController {
     
     private func configDescriptionLabel() {
         let accountText = UILabel()
-        accountText.text = "Hello, world!"
         accountText.textColor = UIColor(named: "YP White")
         accountText.font = UIFont.systemFont(ofSize: 13)
         self.accountText = accountText
@@ -93,3 +141,8 @@ final class ProfileViewController: UIViewController {
     }
 }
 
+extension ProfileViewController {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+}
