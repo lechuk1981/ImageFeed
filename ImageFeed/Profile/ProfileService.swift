@@ -37,7 +37,7 @@ final class ProfileService {
                 completion(.success(profileResult))
                 self.task = nil
             case .failure(let error):
-                print("[ProfileService] Network error: \(error)")
+                print("[ProfileService] Profile fetch failed: \(error)")
                 completion(.failure(error))
                 self.lastToken = nil
             }
