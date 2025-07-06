@@ -138,4 +138,10 @@ final class ImagesListService {
         task.resume()
     }
     
+    func cleanData() {
+        photos = []
+        OAuth2TokenStorage.shared.token = nil
+        task?.cancel()
+        task = nil
+    }
 }

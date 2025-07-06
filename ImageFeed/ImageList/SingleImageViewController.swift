@@ -79,7 +79,7 @@ final class SingleImageViewController: UIViewController {
                     self.image = imageResult.image
                     self.rescaleAndCenterImageInScrollView(image: imageResult.image)
                 case .failure:
-                    print("Error downloading image")
+                    self.showError(url: url)
                 }
             }
         }
@@ -94,7 +94,21 @@ final class SingleImageViewController: UIViewController {
         
         scrollView.contentInset = UIEdgeInsets(top: verticalInset, left: horizontalInset, bottom: verticalInset, right: horizontalInset)
     }
+    
+    private func showError(url: URL) {
+            let alert = UIAlertController(
+                title: "Что-то пошло не так",
+                message: "Попробовать ещё раз?",
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "Не надо", style: .cancel))
+            alert.addAction(UIAlertAction(title: "Повторить", style: .default) { [weak self] _ in
+                self?.loadFullImage(from: url)
+            })
+            present(alert, animated: true)
+        }
 }
+
 
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {

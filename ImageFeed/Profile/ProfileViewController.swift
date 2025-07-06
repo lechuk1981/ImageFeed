@@ -18,7 +18,6 @@ final class ProfileViewController: UIViewController {
     
     private let profileService = ProfileService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,6 +36,18 @@ final class ProfileViewController: UIViewController {
             }
         updateAvatar()
         
+    }
+    
+    @objc
+    private func tapExitButton() {
+        ProfileLogoutService.shared.logout()
+        
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Invalid Configuration")
+            return
+        }
+        window.rootViewController = SplashViewController()
+        window.rootViewController?.viewDidLoad()
     }
     
     func loadProfile() {
@@ -118,6 +129,7 @@ final class ProfileViewController: UIViewController {
     private func configExitButton() {
         let exitButton = UIButton(type: .custom)
         exitButton.setImage(UIImage(named: "Exit"), for: .normal)
+        exitButton.addTarget(self, action: #selector(tapExitButton), for: .touchUpInside)
         self.exitButton = exitButton
     }
     
