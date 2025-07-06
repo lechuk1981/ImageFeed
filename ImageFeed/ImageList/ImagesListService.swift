@@ -47,8 +47,9 @@ struct Photo {
 }
 
 final class ImagesListService {
+    static let shared = ImagesListService()
     static let didChangeNotification = Notification.Name("ImagesListServiceDidChange")
-    private var photos: [Photo] = []
+    private(set) var photos: [Photo] = []
     private var lastLoadedPage: Int?
     private var loading = false
     private var task: URLSessionTask?

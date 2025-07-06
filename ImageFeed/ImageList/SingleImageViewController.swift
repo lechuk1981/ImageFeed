@@ -31,6 +31,7 @@ final class SingleImageViewController: UIViewController {
         )
         present(share, animated: true, completion: nil)
     }
+    var imageURL: URL?
     
     override func viewDidLoad() {
         super.viewDidLoad()
