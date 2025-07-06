@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
     var image: UIImage?{
@@ -16,6 +17,7 @@ final class SingleImageViewController: UIViewController {
             rescaleAndCenterImageInScrollView(image: image)
         }
     }
+    var imageURL: URL?
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var scrollView: UIScrollView!
@@ -31,17 +33,20 @@ final class SingleImageViewController: UIViewController {
         )
         present(share, animated: true, completion: nil)
     }
-    var imageURL: URL?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
         
-        guard let image else { return }
-        imageView.image = image
-        imageView.frame.size = image.size
-        rescaleAndCenterImageInScrollView(image: image)
+//        guard let image else { return }
+//        imageView.image = image
+//        imageView.frame.size = image.size
+//        rescaleAndCenterImageInScrollView(image: image)
+        if let url = imageURL {
+            loadFullImage(from: url)
+        }
         
     }
     
@@ -63,6 +68,21 @@ final class SingleImageViewController: UIViewController {
         
         centerImage()
     }
+    
+    private func loadFullImage(from url: URL) {
+            UIBlockingProgressHUD.show()
+            imageView.kf.setImage(with: url) { [weak self] result in
+                UIBlockingProgressHUD.dismiss()
+                guard let self = self else { return }
+                switch result {
+                case .success(let imageResult):
+                    self.image = imageResult.image
+                    self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+                case .failure:
+                    print("Error downloading image")
+                }
+            }
+        }
     
     
     private func centerImage() {
