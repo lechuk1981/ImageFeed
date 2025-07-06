@@ -40,14 +40,23 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func tapExitButton() {
-        ProfileLogoutService.shared.logout()
         
-        guard let window = UIApplication.shared.windows.first else {
-            assertionFailure("Invalid Configuration")
-            return
-        }
-        window.rootViewController = SplashViewController()
-        window.rootViewController?.viewDidLoad()
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены что хотите выйти?",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Да", style: .default) { [weak self] _ in
+            ProfileLogoutService.shared.logout()
+            guard let window = UIApplication.shared.windows.first else {
+                assertionFailure("Invalid Configuration")
+                return
+            }
+            window.rootViewController = SplashViewController()
+        })
+        alert.addAction(UIAlertAction(title: "Нет", style: .default))
+        present(alert, animated: true)
+        
     }
     
     func loadProfile() {
