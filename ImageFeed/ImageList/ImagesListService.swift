@@ -7,37 +7,6 @@
 
 import Foundation
 
-struct PhotoResult: Decodable {
-    let id: String
-    let createdAt: String?
-    let width: Int
-    let height: Int
-    let urls: UrlsResult
-    let likedByUser: Bool
-    let description: String?
-
-    enum CodingKeys: String, CodingKey {
-        case id, width, height, description, urls
-        case createdAt = "created_at"
-        case likedByUser = "liked_by_user"
-    }
-}
-
-struct UrlsResult: Decodable {
-    let thumb: String
-    let full: String
-}
-
-struct Photo {
-    let id: String
-    let size: CGSize
-    let createdAt: Date?
-    let welcomeDescription: String?
-    let thumbImageURL: String
-    let largeImageURL: String
-    let isLiked: Bool
-}
-
 final class ImagesListService {
     static let shared = ImagesListService()
     static let didChangeNotification = Notification.Name("ImagesListServiceDidChange")
@@ -63,37 +32,49 @@ final class ImagesListService {
         request.setValue("Client-ID \(Constants.accessKey)", forHTTPHeaderField: "Authorization")
         
         let task = urlSession.dataTask(with: request) { [weak self] data, response, error in
-            guard let self = self else { return }
-            self.loading = false
+            guard let self else { return }
+            defer { self.loading = false }
             
-            if let data = data {
-                do {
-                    let decoder = JSONDecoder()
-                    let photoResults = try decoder.decode([PhotoResult].self, from: data)
-                    let newPhotos = photoResults.map { result in
-                        Photo(
-                            id: result.id,
-                            size: CGSize(width: result.width, height: result.height),
-                            createdAt: Self.dateFormatter.date(from: result.createdAt ?? ""),
-                            welcomeDescription: result.description,
-                            thumbImageURL: result.urls.thumb,
-                            largeImageURL: result.urls.full,
-                            isLiked: result.likedByUser
-                        )
-                    }
-                    DispatchQueue.main.async {
-                        self.photos.append(contentsOf: newPhotos)
-                        self.lastLoadedPage = nextPage
-                        NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: self)
-                    }
-                } catch {
-                    print("Decoding error: \(error)")
+            if let error = error {
+                print("[ImagesListService] Network error: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let data else {
+                print("[ImagesListService] Error: No data received")
+                return
+            }
+            
+            let decoder = JSONDecoder()
+            do {
+                let photoResults = try decoder.decode([PhotoResult].self, from: data)
+                let newPhotos = photoResults.map { result in
+                    Photo(
+                        id: result.id,
+                        size: CGSize(width: result.width, height: result.height),
+                        createdAt: Self.dateFormatter.date(from: result.createdAt ?? ""),
+                        welcomeDescription: result.description,
+                        thumbImageURL: result.urls.thumb,
+                        largeImageURL: result.urls.full,
+                        isLiked: result.likedByUser
+                    )
                 }
-            } else if let error = error {
-                print("Loading error: \(error)")
+                
+                DispatchQueue.main.async {
+                    self.photos.append(contentsOf: newPhotos)
+                    self.lastLoadedPage = nextPage
+                    NotificationCenter.default.post(
+                        name: ImagesListService.didChangeNotification,
+                        object: self
+                    )
+                }
+            } catch {
+                print("[ImagesListService] Decoding error: \(error)")
             }
         }
+        
         task.resume()
+        
     }
     
     

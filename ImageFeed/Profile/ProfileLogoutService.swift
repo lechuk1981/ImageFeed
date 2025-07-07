@@ -16,14 +16,10 @@ final class ProfileLogoutService {
     
     func logout() {
         cleanCookies()
-        
         ProfileService.shared.cleanData()
         ProfileImageService.shared.cleanData()
         ImagesListService.shared.cleanData()
-        
         KeychainWrapper.standard.removeObject(forKey: "token")
-        
-        
     }
     
     private func cleanCookies() {

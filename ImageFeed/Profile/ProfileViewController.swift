@@ -24,7 +24,6 @@ final class ProfileViewController: UIViewController {
         setUIElements()
         loadProfile()
         view.backgroundColor = .ypBlack
-        
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(
                 forName: ProfileImageService.didChangeNotification,
@@ -35,12 +34,10 @@ final class ProfileViewController: UIViewController {
                 updateAvatar()
             }
         updateAvatar()
-        
     }
     
     @objc
     private func tapExitButton() {
-        
         let alert = UIAlertController(
             title: "Пока, пока!",
             message: "Уверены что хотите выйти?",
@@ -56,7 +53,6 @@ final class ProfileViewController: UIViewController {
         })
         alert.addAction(UIAlertAction(title: "Нет", style: .default))
         present(alert, animated: true)
-        
     }
     
     func loadProfile() {
@@ -71,20 +67,16 @@ final class ProfileViewController: UIViewController {
         accountText.text = profile.bio
     }
     
-    
     private func setUIElements() {
         configAvatarPhoto()
         configUserNameLabel()
         configNickNameLabel()
         configDescriptionLabel()
         configExitButton()
-        
-        
         [profileImage, nameLabel, accountLabel, accountText, exitButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
-        
         activateConstraints()
     }
     
@@ -97,11 +89,9 @@ final class ProfileViewController: UIViewController {
         let cache = ImageCache.default
         cache.clearDiskCache()
         let processor = RoundCornerImageProcessor(cornerRadius: 42)
-        
         self.profileImage.kf.setImage(with: url,
                                       placeholder: UIImage(named: "placeholder"),
                                       options: [.processor(processor), .transition(.fade(1))])
-        
     }
     
     private func configAvatarPhoto() {
@@ -110,9 +100,7 @@ final class ProfileViewController: UIViewController {
         let photo = UIImage(named: "photo")
         let profileImage = UIImageView(image: photo)
         self.profileImage = profileImage
-        
     }
-    
     
     private func configUserNameLabel() {
         let nameLabel = UILabel()
