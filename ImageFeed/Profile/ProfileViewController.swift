@@ -18,14 +18,12 @@ final class ProfileViewController: UIViewController {
     
     private let profileService = ProfileService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUIElements()
         loadProfile()
         view.backgroundColor = .ypBlack
-        
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(
                 forName: ProfileImageService.didChangeNotification,
@@ -36,7 +34,25 @@ final class ProfileViewController: UIViewController {
                 updateAvatar()
             }
         updateAvatar()
-        
+    }
+    
+    @objc
+    private func tapExitButton() {
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены что хотите выйти?",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Да", style: .default) { [weak self] _ in
+            ProfileLogoutService.shared.logout()
+            guard let window = UIApplication.shared.windows.first else {
+                assertionFailure("Invalid Configuration")
+                return
+            }
+            window.rootViewController = SplashViewController()
+        })
+        alert.addAction(UIAlertAction(title: "Нет", style: .default))
+        present(alert, animated: true)
     }
     
     func loadProfile() {
@@ -51,20 +67,16 @@ final class ProfileViewController: UIViewController {
         accountText.text = profile.bio
     }
     
-    
     private func setUIElements() {
         configAvatarPhoto()
         configUserNameLabel()
         configNickNameLabel()
         configDescriptionLabel()
         configExitButton()
-        
-        
         [profileImage, nameLabel, accountLabel, accountText, exitButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
-        
         activateConstraints()
     }
     
@@ -77,11 +89,9 @@ final class ProfileViewController: UIViewController {
         let cache = ImageCache.default
         cache.clearDiskCache()
         let processor = RoundCornerImageProcessor(cornerRadius: 42)
-        
         self.profileImage.kf.setImage(with: url,
                                       placeholder: UIImage(named: "placeholder"),
                                       options: [.processor(processor), .transition(.fade(1))])
-        
     }
     
     private func configAvatarPhoto() {
@@ -90,9 +100,7 @@ final class ProfileViewController: UIViewController {
         let photo = UIImage(named: "photo")
         let profileImage = UIImageView(image: photo)
         self.profileImage = profileImage
-        
     }
-    
     
     private func configUserNameLabel() {
         let nameLabel = UILabel()
@@ -118,6 +126,7 @@ final class ProfileViewController: UIViewController {
     private func configExitButton() {
         let exitButton = UIButton(type: .custom)
         exitButton.setImage(UIImage(named: "Exit"), for: .normal)
+        exitButton.addTarget(self, action: #selector(tapExitButton), for: .touchUpInside)
         self.exitButton = exitButton
     }
     

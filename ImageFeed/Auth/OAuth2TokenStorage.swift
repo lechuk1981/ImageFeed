@@ -17,6 +17,8 @@ private enum Keys: String {
 
 final class OAuth2TokenStorage: OAuth2TokenStorageProtocol {
     
+    static let shared = OAuth2TokenStorage()
+    
     var token: String? {
         get {
             KeychainWrapper.standard.string(forKey: Keys.token.rawValue)

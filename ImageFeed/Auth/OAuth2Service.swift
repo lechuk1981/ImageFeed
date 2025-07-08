@@ -31,7 +31,7 @@ final class OAuth2Service {
             print("[OAuth2Service] Invalid base URL")
             return nil
         }
-        let url = URL(
+        guard let url = URL(
             string: "/oauth/token"
             + "?client_id=\(Constants.accessKey)"
             + "&&client_secret=\(Constants.secretKey)"
@@ -39,7 +39,7 @@ final class OAuth2Service {
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             relativeTo: baseURL
-        )!
+        ) else { return nil }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         print(">>>", request)

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
     var image: UIImage?{
@@ -16,6 +17,7 @@ final class SingleImageViewController: UIViewController {
             rescaleAndCenterImageInScrollView(image: image)
         }
     }
+    var imageURL: URL?
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var scrollView: UIScrollView!
@@ -32,15 +34,15 @@ final class SingleImageViewController: UIViewController {
         present(share, animated: true, completion: nil)
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
         
-        guard let image else { return }
-        imageView.image = image
-        imageView.frame.size = image.size
-        rescaleAndCenterImageInScrollView(image: image)
+        if let url = imageURL {
+            loadFullImage(from: url)
+        }
         
     }
     
@@ -63,6 +65,21 @@ final class SingleImageViewController: UIViewController {
         centerImage()
     }
     
+    private func loadFullImage(from url: URL) {
+        UIBlockingProgressHUD.show()
+        imageView.kf.setImage(with: url) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            guard let self = self else { return }
+            switch result {
+            case .success(let imageResult):
+                self.image = imageResult.image
+                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+            case .failure:
+                self.showError(url: url)
+            }
+        }
+    }
+    
     
     private func centerImage() {
         let scrollViewSize = scrollView.bounds.size
@@ -73,7 +90,21 @@ final class SingleImageViewController: UIViewController {
         
         scrollView.contentInset = UIEdgeInsets(top: verticalInset, left: horizontalInset, bottom: verticalInset, right: horizontalInset)
     }
+    
+    private func showError(url: URL) {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так",
+            message: "Попробовать ещё раз?",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Не надо", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Повторить", style: .default) { [weak self] _ in
+            self?.loadFullImage(from: url)
+        })
+        present(alert, animated: true)
+    }
 }
+
 
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {

@@ -52,6 +52,9 @@
                                                     </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="No Active"/>
+                                                    <connections>
+                                                        <action selector="TabLikeButton:" destination="f3f-aq-z5H" eventType="touchUpInside" id="sgb-I5-pS9"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
