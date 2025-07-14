@@ -1,45 +1,55 @@
 //
-//  AuthViewController.swift
+//  Untitled.swift
 //  ImageFeed
 //
-//  Created by Andrey Sopov on 30.03.2025.
+//  Created by Andrey Sopov on 14.07.2025.
 //
 
-import UIKit
+import Foundation
 
-protocol AuthViewControllerDelegate: AnyObject {
-    func authViewController(_ viewController: AuthViewController, didAuthenticateWithCode code: String)
+protocol AuthHelperProtocol {
+    func authRequest() -> URLRequest?
+    func code(from url: URL) -> String?
 }
 
-final class AuthViewController: UIViewController {
-    private let showWebViewSegueIdentifier = "ShowWebView"
-    weak var delegate: AuthViewControllerDelegate?
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showWebViewSegueIdentifier {
-            guard
-                let webViewViewController = segue.destination as? WebViewViewController
-            else {
-                assertionFailure("Failed to prepare for \(showWebViewSegueIdentifier)")
-                return
-            }
-            let authHelper = AuthHelper()
-            let webViewPresenter = WebViewPresenter(authHelper: authHelper)
-            webViewViewController.presenter = webViewPresenter
-            webViewPresenter.view = webViewViewController
-            webViewViewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
-    }
-}
-
-extension AuthViewController: WebViewViewControllerDelegate {
-    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        delegate?.authViewController(self, didAuthenticateWithCode: code)
+final class AuthHelper: AuthHelperProtocol {
+    
+    let configuration: AuthConfiguration
+    
+    init(configuration: AuthConfiguration = .standard) {
+        self.configuration = configuration
     }
     
-    func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
-        vc.dismiss(animated: true)
+    func authRequest() -> URLRequest? {
+        guard let url = authURL() else { return nil }
+        
+        return URLRequest(url: url)
+    }
+    
+    func authURL() -> URL? {
+        guard var urlComponents = URLComponents(string: configuration.authURLString) else {
+            return nil
+        }
+        
+        urlComponents.queryItems = [
+            URLQueryItem(name: "client_id", value: configuration.accessKey),
+            URLQueryItem(name: "redirect_uri", value: configuration.redirectURI),
+            URLQueryItem(name: "response_type", value: "code"),
+            URLQueryItem(name: "scope", value: configuration.accessScope)
+        ]
+        
+        return urlComponents.url
+    }
+    
+    func code(from url: URL) -> String? {
+        if let urlComponents = URLComponents(string: url.absoluteString),
+           urlComponents.path == "/oauth/authorize/native",
+           let items = urlComponents.queryItems,
+           let codeItem = items.first(where: { $0.name == "code" })
+        {
+            return codeItem.value
+        } else {
+            return nil
+        }
     }
 }
