@@ -29,7 +29,7 @@ class Image_FeedUITests: XCTestCase {
 //        XCTAssertTrue(loginTextField.waitForExistence(timeout: 5))
         
         loginTextField.tap()
-        loginTextField.typeText("lechuk@yandex.ru")
+        loginTextField.typeText("")
         webView.swipeUp()
         
         let passwordTextField = webView.descendants(matching: .secureTextField).element
@@ -38,7 +38,7 @@ class Image_FeedUITests: XCTestCase {
         passwordTextField.tap()
         Thread.sleep(forTimeInterval: 1)
         
-        UIPasteboard.general.string = "le610108Chuk$"
+        UIPasteboard.general.string = ""
         passwordTextField.doubleTap()
         
         if app.menuItems["Paste"].exists {
